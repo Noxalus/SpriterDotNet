@@ -55,5 +55,15 @@ namespace SpriterDotNet.MonoGame.Sprites
                 effects: effects
             );
         }
+
+        public float Height()
+        {
+            return texture.Width;
+        }
+
+        public float Width()
+        {
+            return texture.Height;
+        }
     }
 }

@@ -88,6 +88,16 @@ namespace SpriterDotNet.MonoGame.Sprites
                 effects: effects
             );
         }
+
+        public float Width()
+        {
+            return sourceRectangle.Width;
+        }
+
+        public float Height()
+        {
+            return sourceRectangle.Height;
+        }
     }
 }
 
