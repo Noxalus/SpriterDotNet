@@ -21,7 +21,7 @@ namespace SpriterDotNet.MonoGame.Sprites
             this.texture = texture;
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 pivot, Vector2 position, Vector2 scale, float rotation, Color color, float depth)
+        public void Draw(SpriteBatch spriteBatch, Vector2 pivot, Vector2 position, Vector2 scale, float rotation, Color color, float depth, bool stretchOut)
         {
             SpriteEffects effects = SpriteEffects.None;
 
@@ -43,17 +43,52 @@ namespace SpriterDotNet.MonoGame.Sprites
             scale = new Vector2(Math.Abs(scale.X), Math.Abs(scale.Y));
             Vector2 origin = new Vector2(originX, originY);
 
-            spriteBatch.Draw
-            (
-                texture: texture,
-                origin: origin,
-                position: position,
-                scale: scale,
-                rotation: rotation,
-                color: color,
-                layerDepth: depth,
-                effects: effects
-            );
+            // If we don't want to deform the sprite when the scale change
+            if (!stretchOut && scale != Vector2.One)
+            {
+                var drawCount = new Point(1 + (int)Math.Floor(scale.X), 1 + (int)Math.Floor(scale.Y));
+
+                for (int x = 0; x < drawCount.X; x++)
+                {
+                    for (int y = 0; y < drawCount.Y; y++)
+                    {
+                        var positionOffset = new Point(texture.Width * x, texture.Height * y);
+                        var destinationRectangle = new Rectangle(
+                            (int)(position.X + positionOffset.X),
+                            (int)(position.Y + positionOffset.Y),
+                            texture.Width, texture.Height
+                        );
+
+                        if (x == drawCount.X - 1)
+                            destinationRectangle.Width = (int)(destinationRectangle.Width * (scale.X - x));
+                        else if (scale.X < 1f)
+                            destinationRectangle.Width = (int)(destinationRectangle.Width * scale.X);
+
+                        if (y == drawCount.Y - 1)
+                            destinationRectangle.Height = (int)(destinationRectangle.Height * (scale.Y - y));
+                        else if (scale.Y < 1f)
+                            destinationRectangle.Height = (int)(destinationRectangle.Height * scale.Y);
+
+                        var sourceRectangle = new Rectangle(0, 0, destinationRectangle.Width, destinationRectangle.Height);
+
+                        spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, rotation, origin, effects, depth);
+                    }
+                }
+            }
+            else
+            {
+                spriteBatch.Draw
+                (
+                    texture: texture,
+                    origin: origin,
+                    position: position,
+                    scale: scale,
+                    rotation: rotation,
+                    color: color,
+                    layerDepth: depth,
+                    effects: effects
+                );
+            }
         }
 
         public float Height()
