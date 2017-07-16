@@ -47,17 +47,28 @@ namespace SpriterDotNet.MonoGame.Sprites
             if (!stretchOut && scale != Vector2.One)
             {
                 var drawCount = new Point(1 + (int)Math.Floor(scale.X), 1 + (int)Math.Floor(scale.Y));
+                var spritePartOrigin = position;
+                var rotationCos = Math.Cos(rotation);
+                var rotationSin = Math.Sin(rotation);
 
                 for (int x = 0; x < drawCount.X; x++)
                 {
                     for (int y = 0; y < drawCount.Y; y++)
                     {
                         var positionOffset = new Point(texture.Width * x, texture.Height * y);
-                        var destinationRectangle = new Rectangle(
+
+                        var newPosition = new Point(
                             (int)(position.X + positionOffset.X),
-                            (int)(position.Y + positionOffset.Y),
-                            texture.Width, texture.Height
+                            (int)(position.Y + positionOffset.Y)
                         );
+
+                        // Take rotation value into account
+                        newPosition = new Point(
+                            (int)(spritePartOrigin.X + (newPosition.X - spritePartOrigin.X) * rotationCos - (newPosition.Y - spritePartOrigin.Y) * rotationSin),
+                            (int)(spritePartOrigin.Y + (newPosition.X - spritePartOrigin.X) * rotationSin + (newPosition.Y - spritePartOrigin.Y) * rotationCos)
+                        );
+
+                        var destinationRectangle = new Rectangle(newPosition.X, newPosition.Y, texture.Width, texture.Height);
 
                         if (x == drawCount.X - 1)
                             destinationRectangle.Width = (int)(destinationRectangle.Width * (scale.X - x));
