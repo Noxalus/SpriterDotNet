@@ -7,6 +7,7 @@ namespace SpriterDotNet.MonoGame
     {
         float Width();
         float Height();
+        Texture2D Texture();
 
         void Draw(SpriteBatch spriteBatch, Vector2 pivot, Vector2 position, Vector2 scale, float rotation, Color color, float depth, bool stretchOut = true);
     }

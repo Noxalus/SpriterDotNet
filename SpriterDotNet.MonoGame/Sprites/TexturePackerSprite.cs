@@ -98,6 +98,11 @@ namespace SpriterDotNet.MonoGame.Sprites
         {
             return sourceRectangle.Height;
         }
+
+        public Texture2D Texture()
+        {
+            return texture;
+        }
     }
 }
 

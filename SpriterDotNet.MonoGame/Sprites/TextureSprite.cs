@@ -58,14 +58,14 @@ namespace SpriterDotNet.MonoGame.Sprites
                         var positionOffset = new Point(texture.Width * x, texture.Height * y);
 
                         var newPosition = new Point(
-                            (int)(position.X + positionOffset.X),
-                            (int)(position.Y + positionOffset.Y)
+                            (int)Math.Ceiling(position.X + positionOffset.X),
+                            (int)Math.Ceiling(position.Y + positionOffset.Y)
                         );
 
                         // Take rotation value into account
                         newPosition = new Point(
-                            (int)(spritePartOrigin.X + (newPosition.X - spritePartOrigin.X) * rotationCos - (newPosition.Y - spritePartOrigin.Y) * rotationSin),
-                            (int)(spritePartOrigin.Y + (newPosition.X - spritePartOrigin.X) * rotationSin + (newPosition.Y - spritePartOrigin.Y) * rotationCos)
+                            (int)Math.Ceiling(spritePartOrigin.X + (newPosition.X - spritePartOrigin.X) * rotationCos - (newPosition.Y - spritePartOrigin.Y) * rotationSin),
+                            (int)Math.Ceiling(spritePartOrigin.Y + (newPosition.X - spritePartOrigin.X) * rotationSin + (newPosition.Y - spritePartOrigin.Y) * rotationCos)
                         );
 
                         var destinationRectangle = new Rectangle(newPosition.X, newPosition.Y, texture.Width, texture.Height);
@@ -110,6 +110,11 @@ namespace SpriterDotNet.MonoGame.Sprites
         public float Width()
         {
             return texture.Height;
+        }
+
+        public Texture2D Texture()
+        {
+            return texture;
         }
     }
 }
