@@ -103,6 +103,11 @@ namespace SpriterDotNet.MonoGame.Sprites
         {
             return texture;
         }
+
+        public void Texture(Texture2D texture)
+        {
+            this.texture = texture;
+        }
     }
 }
 

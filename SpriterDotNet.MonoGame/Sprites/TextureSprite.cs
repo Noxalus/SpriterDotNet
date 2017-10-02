@@ -14,7 +14,7 @@ namespace SpriterDotNet.MonoGame.Sprites
     /// </summary>
     public class TextureSprite : ISprite
     {
-        private readonly Texture2D texture;
+        private Texture2D texture;
 
         public TextureSprite(Texture2D texture)
         {
@@ -115,6 +115,11 @@ namespace SpriterDotNet.MonoGame.Sprites
         public Texture2D Texture()
         {
             return texture;
+        }
+
+        public void Texture(Texture2D texture)
+        {
+            this.texture = texture;
         }
     }
 }
