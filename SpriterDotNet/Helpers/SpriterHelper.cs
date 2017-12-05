@@ -154,6 +154,7 @@ namespace SpriterDotNet.Helpers
             target.EntityId = a.EntityId;
             target.AnimationId = a.AnimationId;
             target.T = MathHelper.Linear(a.T, b.T, factor);
+            target.Name = a.Name;
         }
 
         /// <summary>
