@@ -290,6 +290,7 @@ namespace SpriterDotNet
             switch (timeline.ObjectType)
             {
                 case SpriterObjectType.Sprite:
+                    info.Name = timeline.Name;
                     FrameData.SpriteData.Add(info);
                     break;
                 case SpriterObjectType.Entity:
@@ -349,15 +350,14 @@ namespace SpriterDotNet
 
         protected virtual SpriterObject GetObjectInfo(SpriterRef spriterRef, SpriterAnimation animation, float targetTime)
         {
-            SpriterTimelineKey[] keys = animation.Timelines[spriterRef.TimelineId].Keys;
+            SpriterTimeline timeline = animation.Timelines[spriterRef.TimelineId];
+            SpriterTimelineKey[] keys = timeline.Keys;
             SpriterTimelineKey keyA = keys[spriterRef.KeyId];
             SpriterTimelineKey keyB = keys.GetNextKey(keyA, animation.Looping);
 
-            keyA.ObjectInfo.Name = spriterRef.Name;
+            keyA.ObjectInfo.Name = timeline.Name;
 
             if (keyB == null) return Copy(keyA.ObjectInfo);
-
-            keyB.ObjectInfo.Name = spriterRef.Name;
 
             float factor = SpriterHelper.GetFactor(keyA, keyB, animation.Length, targetTime);
             return Interpolate(keyA.ObjectInfo, keyB.ObjectInfo, factor, keyA.Spin);
